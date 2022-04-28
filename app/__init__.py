@@ -15,8 +15,6 @@ import pyodbc
 from .extensions import db,admin, mail
 import os
 
-
-
 def create_app():
     
     app = Flask(__name__,static_folder=None)
@@ -27,7 +25,6 @@ def create_app():
     admin.init_app(app)
     app.config['FLASK_ADMIN_SWATCH'] = 'cosmo'
  
-
     with app.app_context():
         app.register_blueprint(index)
         app.register_blueprint(produtos)
