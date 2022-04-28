@@ -15,23 +15,13 @@ import pyodbc
 from .extensions import db,admin, mail
 import os
 
-parametros = (
-"Driver={SQL Server Native Client 11.0};"
-"Server=w2019.hausz.com.br;"
-"Database=HauszMapa;"
-"UID=Aplicacao;"
-"PWD=S3nh4Apl!caca0"
 
-)
 
 def create_app():
     
     app = Flask(__name__,static_folder=None)
     SECRET_KEY = os.urandom(32)
     app.config['SECRET_KEY'] = SECRET_KEY
-    url_db = quote_plus(parametros)
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'mssql+pyodbc:///?odbc_connect=%s' %url_db
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     mail.init_app(app)
     db.init_app(app)
     admin.init_app(app)
