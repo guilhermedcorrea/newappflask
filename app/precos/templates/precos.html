@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="icon" href="{{url_for('index.static', filename='imagens/favicon.png')}}">
+    <title>Monitoramento de Preços</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="https://www.hausz.com.br/index.html"><img src="https://www.hausz.com.br/IMG/LogoHausz200.png"alt="Image"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{url_for('index.home')}}">Home <span class="sr-only"></span></a>
+          </li>
+         
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('precos.indexprecos')}}">Produtos</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('index.dashboard')}}">Relatorios</a>
+          </li>
+
+          
+            </div>
+         
+        </ul>
+      </div>
+    </nav>
+
+    <div class="row">
+      <div class="col-lg-12">
+      </div>
+
+  <form method="POST">
+      <!--DropDown Search-->
+      <div class="input-group mb-3">
+        <div class="input-group-text p-0">
+            <select class="form-select form-select-lg shadow-none bg-light border-0" name="categoria">
+                {% for categoria in categorias %}
+                <option>{{categoria.NomeCat}}</option>
+                {%endfor%}
+               
+            </select>
+            
+        </div>
+        <div class="input-group-text p-0">
+          <select class="form-select form-select-lg shadow-none bg-light border-0" name="subcategoria">
+              {% for sub in subcategorias %}
+              <option>{{sub.NomeSubCat}}</option>
+              {%endfor%}
+             
+          </select>
+          
+      </div>
+      <div class="input-group-text p-0">
+        <select class="form-select form-select-lg shadow-none bg-light border-0" name="departamento">
+            {% for departamento in departamentos%}
+            <option>{{departamento.NomeDept}}</option>
+            {%endfor%}
+           
+        </select>
+        
+    </div>
+    <div class="input-group-text p-0">
+      <select class="form-select form-select-lg shadow-none bg-light border-0">
+          {% for marca in marcas%}
+          <option>{{marca.Marca}}</option>
+         {%endfor%}
+      </select>
+
+      <input type="submit" value="Tax Update" name="update" />
+    
+      
+  </div>
+</form>
+  
+        
+        <input type="text" class="form-control" id = "myInput" placeholder="Search Here">
+        <button class="input-group-text shadow-none px-4 btn-warning">
+        <i class="bi bi-search"></i>
+        </button>
+    </div>
+        <br><br>
+        <form method="get" action="#">
+          <div class="form-group row">
+            <div class="col-12">
+              <input class="form-control d-inline-flex p-2 d-flex" id="myInput" type="text" placeholder="Pesquise aqui...">
+            
+            </div>
+          </div>
+        </form>
+      
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Imagem</th>
+            <th scope="col">REFERENCIA</th>
+            <th scope="col">MARCA</th>
+            <th scope="col">ITEM</th>
+            <th scope="col">PrazoFabricação</th>
+            <th scope="col">SALDO</th>
+            <th scope="col">PrazoTotal</th>
+            <th scope="col">ESTOQUE</th>
+            <th scope="col">Meu preço</th>
+            <th scope="col">Disponivel</th>
+            <th scope="col">Concorrente</th>
+            <th scope="col">Preço</th>
+            <th scope="col">DiferençaPreco</th>
+     
+          </tr>
+        </thead>
+        <tbody id="myTable"  alt="Max-width 100%">
+          <tr>
+            {% for prod in produtos %}
+            <th scope="row"><img src="{{prod.UrlImagem}}"alt="Image" height="50" width="50"></th>
+            <th scope="row">{{prod.SKU}}</th>
+            <th scope="row">{{prod.Marca}}</th>
+            <th scope="row">{{prod.NomeProduto|truncate(40)}}</th>
+            <th scope="row">{{prod.PrazoFabricacao}}</th>
+            <th scope="row">{{prod.SaldoAtual}}</th>
+            <th scope="row">{{prod.PrazoTotal}}</th>
+            <th scope="row">{{prod.NomeEstoque}}</th>
+            <th scope="row">{{prod.Preco}}</th>
+            <th scope="row">30%</th>
+            <th scope="row">{{prod.FatorMultiplicador}}</th>
+            <th scope="row">{{prod[15]}}</th>
+            <th scope="row">{{prod.MinP}}</th>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+
+ 
+  <th scope="row"><a href="{{page-1}}" class="btn btn-outline-dark">Anterior</a></th>
+  <th scope="row"><a href="{{page}}" class="btn btn-outline-dark">{{page}}</a></th>
+  <th scope="row"><a href="{{page+1}}" class="btn btn-outline-dark">{{page+1}}</a></th>
+  <th scope="row"><a href="{{page+2}}" class="btn btn-outline-dark">{{page+2}}</a></th>
+  <th scope="row"><a href="{{page+3}}" class="btn btn-outline-dark">{{page+3}}</a></th>
+  <th scope="row"><a href="{{page+4}}" class="btn btn-outline-dark">next</a></th>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script type="text/javascript" src="{{ url_for('index.static', filename='jquery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('index.static', filename='app.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('index.static', filename='jquery.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('index.static', filename='app.js') }}"></script>
+  <script>
+      $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+      });
+      });
+      </script>
+
+    <script>
+        $('#selectstate').on('change', function(){
+        $("[name='update']:submit").trigger("click");
+    });
+    </script>
+
+</body>
+</html>
